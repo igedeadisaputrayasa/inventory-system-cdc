@@ -107,6 +107,7 @@ class LoginUserPageScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    loggingIn: state.loginUserPage.loggingIn
   }
 }
 

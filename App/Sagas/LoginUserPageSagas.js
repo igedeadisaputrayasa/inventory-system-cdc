@@ -22,8 +22,9 @@ export function * doLoginUserPage (api, action) {
   const response = yield call(api.postLoginUserPage, userName, userPassword)
   // success?
   if (response.status === 200) {
-    const { access_token, refresh_token } = response.data
-    
+    const { access_token, refresh_token , error, error_description} = response.data
+    Alert.alert('Success', 'Login Success !!!')
+    yield put(LoginUserPageActions.loginUserPageSuccess(access_token, refresh_token))
   } else if (response.status == null) {
     const networkError = I18n.t('emNoNetworkAvailable')
     Alert.alert('Error', networkError)

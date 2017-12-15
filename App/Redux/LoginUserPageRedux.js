@@ -15,46 +15,52 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  data: null,
-  fetching: null,
-  payload: null,
   errorDescription: null,
   error: null,
+  loggingIn: false,
   accessToken: null,
-  refreshToken: null,
-  loggingIn: false
+  refreshToken: null
 })
 
-/* ------------- Selectors ------------- */
+/* ------------- Selectors ------------- 
 
 export const LoginUserPageSelectors = {
   getData: state => state.data
 }
 
+*/
+
 /* ------------- Reducers ------------- */
 
 // request the data from an api
 export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null})
+  state.merge({ 
+    errorDescription: null,
+    error: null,
+    loggingIn: true
+  })
 
 // successful api lookup
 export const success = (state, action) => {
-  const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
+  const { accessToken, refreshToken } = action
+  return state.merge({ 
+    errorDescription: null,
+    error: null,
+    loggingIn: false,
+    accessToken: accessToken,
+    refreshToken: refreshToken
+   })
 }
 
 // Something went wrong somewhere.
-export const failure = state =>
-  state.merge({
-    data : null,
-    payload: null, 
-    fetching: false, 
-    errorDescription: errorDescription,
-    error: error, 
-    accessToken: null,
-    refreshToken: null,
-    loggingIn: false
-  })
+export const failure = (state, {error, errorDescription}) =>
+state.merge({
+  loggingIn: false,
+  error: error,
+  errorDescription: errorDescription,
+  accessToken: null,
+  refreshToken: null
+})
 
 /* ------------- Hookup Reducers To Types ------------- */
 
